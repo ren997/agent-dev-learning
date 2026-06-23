@@ -3,7 +3,7 @@ import os
 import sys
 from pathlib import Path
 
-from openai import OpenAI
+from openai import APIConnectionError, OpenAI
 
 
 CONFIG_PATH = Path(__file__).with_name("config.json")
@@ -14,6 +14,14 @@ DEFAULT_CONFIG = {
     "model": "gpt-4.1-mini",
     "system_prompt": "你是一个耐心的 Agent 开发学习助手，用简洁中文回答。",
 }
+
+
+def configure_console_encoding() -> None:
+    for stream_name in ("stdin", "stdout", "stderr"):
+        stream = getattr(sys, stream_name, None)
+        reconfigure = getattr(stream, "reconfigure", None)
+        if callable(reconfigure):
+            reconfigure(encoding="utf-8", errors="replace")
 
 
 def load_config() -> dict:
@@ -40,6 +48,7 @@ def build_client(config: dict) -> OpenAI:
 
 
 def main() -> None:
+    configure_console_encoding()
     config = load_config()
     client = build_client(config)
     model = os.getenv("OPENAI_MODEL", config["model"])
@@ -60,10 +69,14 @@ def main() -> None:
         },
     ]
 
-    response = client.chat.completions.create(
-        model=model,
-        messages=messages,
-    )
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=messages,
+        )
+    except APIConnectionError:
+        print("连接模型服务失败。请检查网络、base_url，或稍后重试。")
+        return
 
     answer = response.choices[0].message.content
     print("\n模型回答：")

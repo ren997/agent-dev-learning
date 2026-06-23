@@ -1,0 +1,6 @@
+{
+  "api_key": "your-api-key",
+  "base_url": "https://api.deepseek.com",
+  "model": "deepseek-chat",
+  "system_prompt": "你是一个耐心的 Agent 开发学习助手。需要计算时优先调用 calculator 工具，用简洁中文回答。"
+}
