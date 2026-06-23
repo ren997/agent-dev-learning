@@ -34,7 +34,7 @@ There is no formal test suite yet. For now, validate changes with `python -m py_
 
 ## Commit & Pull Request Guidelines
 
-Use Conventional Commit-style prefixes such as `feat:`, `fix:`, and `docs:`. Keep subjects short and imperative, for example `feat: add tool-calling example` or `fix: handle API connection errors in simple_chat`.
+Use Conventional Commit-style prefixes such as `feat:`, `fix:`, `docs:`, and `chore:`. Commit subjects in this repository should use Chinese after the prefix, for example `feat: 新增工具调用示例` or `fix: 修复 simple_chat 连接报错提示`.
 
 Pull requests should include:
 - a short summary of the learning or code change
